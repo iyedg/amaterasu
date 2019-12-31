@@ -6,6 +6,7 @@ import cv2
 import pafy
 from blinker import signal
 from loguru import logger
+from cute_names import cute_name
 
 SENTINEL = object()
 
@@ -23,7 +24,7 @@ READER_RECEIVED_FRAME_EVT = signal("READER_RECEIVED_FRAME_EVT")
 # TODO: implement __iter__
 class DownloaderThread(threading.Thread):
     def __init__(
-        self, youtube_link, sink_queue, name=uuid.uuid1(), frame_skip=0, daemon=True,
+        self, youtube_link, sink_queue, name=cute_name, frame_skip=0, daemon=True,
     ):
         super().__init__()
         self.youtube_link = youtube_link
