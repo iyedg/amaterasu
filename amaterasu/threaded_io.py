@@ -25,7 +25,7 @@ class DownloaderThread(threading.Thread):
     def __init__(
         self,
         youtube_link,
-        sink_queue,
+        sink_queue,  # TODO: crate own sink
         name=None,
         frame_skip=0,
         daemon=True,
@@ -76,6 +76,9 @@ class DownloaderThread(threading.Thread):
                     resized_frame = cv2.resize(src=frame, dsize=(480, 320))
                     buffer.append({"frame": resized_frame, "timestamp": ts})
             self.sink_queue.put(buffer)
+        self.sink_queue.put(SENTINEL)
+        logger.warning(f"{self.name} has finished")
+        DOWNLOADER_EO_STREAM_EVT.send(self)
 
     def __iter__(self):
         for item in iter(self.sink_queue.get, SENTINEL):

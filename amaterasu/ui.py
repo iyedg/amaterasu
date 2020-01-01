@@ -1,21 +1,17 @@
-import cProfile
 from pyinstrument import Profiler
-import io
-import pstats
 import queue
-import threading
 import time
 
 import numpy as np
 import streamlit as st
 from loguru import logger
 
-from threaded_io import (
+from amaterasu.threaded_io import (
     DOWNLOADER_STARTED_EVT,
     DOWNLOADER_STOP_EVT,
-    SENTINEL,
     DownloaderThread,
 )
+from amaterasu.ml import predict
 
 
 def update_status(sender):
@@ -35,7 +31,7 @@ def main():
     youtube_link = st.sidebar.text_input(
         "YouTube Link", "https://www.youtube.com/watch?v=ns6BqrV9Ppk&t=10s"
     )
-    every = st.sidebar.slider("Process a frame out of every", 0, 50, 15)
+    every = st.sidebar.slider("Process a frame out of every", 0, 50, 30)
     queue_size = st.sidebar.progress(0)
     queue_size_txt = st.sidebar.empty()
     active_threads_count = st.sidebar.empty()
@@ -54,8 +50,11 @@ def main():
         for frame_info in chunk:
             frame, ts = frame_info.values()
             timestamp = time.strftime("%H:%M:%S", time.gmtime(ts / 1000))
+            prediction = predict(frame)
             frame_display.image(
-                np.array(frame, dtype=np.uint8), channels="BGR", caption=timestamp
+                np.array(frame, dtype=np.uint8),
+                channels="BGR",
+                caption=f"{timestamp} | recognized {prediction}",
             )
             queue_size.progress(sink.qsize() / DOWNLOAD_QUEUE_SIZE)
             queue_size_txt.markdown(
