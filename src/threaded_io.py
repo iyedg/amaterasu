@@ -20,7 +20,6 @@ READER_STARTED_EVT = signal("READER_STARTED_EVT")
 READER_RECEIVED_FRAME_EVT = signal("READER_RECEIVED_FRAME_EVT")
 
 
-# TODO: implement __iter__
 class DownloaderThread(threading.Thread):
     def __init__(
         self,

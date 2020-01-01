@@ -27,6 +27,7 @@ jupyterlab-dash = "0.1.0a3"
 streamlit = "^0.52.2"
 requests = "^2.22.0"
 blinker = "^1.4"
+pyinstrument = "^3.1.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^19.10b0", allow-prereleases = true}
