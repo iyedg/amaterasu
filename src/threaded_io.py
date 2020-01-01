@@ -68,6 +68,10 @@ class DownloaderThread(threading.Thread):
                     buffer.append({"frame": resized_frame, "timestamp": ts})
             self.sink_queue.put(buffer)
 
+    def __iter__(self):
+        for item in iter(self.sink_queue.get, SENTINEL):
+            yield item
+
     def on_kill(self, sender):
         logger.debug(f"{DOWNLOADER_STOP_EVT} received")
         self.killer_queue.put(SENTINEL)
