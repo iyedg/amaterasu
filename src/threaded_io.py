@@ -14,7 +14,6 @@ DOWNLOADER_STARTED_EVT = signal("DOWNLOADER_STARTED_EVT")
 DOWNLOADER_EO_STREAM_EVT = signal("DOWNLOADER_EO_STREAM_EVT")
 DOWNLOADER_STOP_EVT = signal("DOWNLOADER_STOP_EVT")
 
-d_test_signal = signal("test")
 
 READER_EMPTY_DOWNLOADER_QUEUE_EVT = signal("READER_EMPTY_DOWNLOADER_QUEUE_EVT")
 READER_STARTED_EVT = signal("READER_STARTED_EVT")
@@ -65,7 +64,8 @@ class DownloaderThread(threading.Thread):
                     self.current_frame % (self.frame_skip + 1) == 0
                     or self.current_frame == 1
                 ):
-                    buffer.append({"frame": frame, "timestamp": ts})
+                    resized_frame = cv2.resize(src=frame, dsize=(480, 320))
+                    buffer.append({"frame": resized_frame, "timestamp": ts})
             self.sink_queue.put(buffer)
 
     def on_kill(self, sender):
