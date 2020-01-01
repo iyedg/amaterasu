@@ -43,7 +43,7 @@ def main():
     response_display = st.sidebar.empty()
     kill_button = st.sidebar.button("Kill")
     downloader = DownloaderThread(
-        youtube_link, sink_queue=sink, frame_skip=every, chunk_size=120
+        youtube_link, sink_queue=sink, frame_skip=every, chunk_size=1000
     )
     downloader.start()
 

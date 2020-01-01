@@ -48,12 +48,15 @@ class DownloaderThread(threading.Thread):
 
     def run(self):
         DOWNLOADER_STARTED_EVT.send(self)
+        logger.debug(f"{self.name} is Downloading {self.youtube_link}")
         video_stream_url = pafy.new(self.youtube_link).getbest().url
+        logger.debug(f"{self.name} started capturing video")
         capture = cv2.VideoCapture(video_stream_url)
         while True:
             buffer = []
             if not self.killer_queue.empty():
                 if self.killer_queue.get_nowait() == SENTINEL:
+                    self.sink_queue.put(SENTINEL)
                     DOWNLOADER_EO_STREAM_EVT.send(self)
                     break
             if len(buffer) <= self.chunk_size:
@@ -61,6 +64,7 @@ class DownloaderThread(threading.Thread):
                 ts = capture.get(cv2.CAP_PROP_POS_MSEC)
                 if not success:
                     self.sink_queue.put(SENTINEL)
+                    DOWNLOADER_EO_STREAM_EVT.send(self)
                     break
                 else:
                     self.current_frame += 1
@@ -68,6 +72,7 @@ class DownloaderThread(threading.Thread):
                     self.current_frame % (self.frame_skip + 1) == 0
                     or self.current_frame == 1
                 ):
+                    logger.debug(f"{self.name} successfully received frame")
                     resized_frame = cv2.resize(src=frame, dsize=(480, 320))
                     buffer.append({"frame": resized_frame, "timestamp": ts})
             self.sink_queue.put(buffer)
