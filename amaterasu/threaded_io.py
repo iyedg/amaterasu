@@ -1,12 +1,13 @@
-import threading
-import uuid
 import queue
+import threading
+import time
 
 import cv2
 import pafy
 from blinker import signal
 from loguru import logger
-from cute_names import cute_name
+
+from amaterasu.cute_names import cute_name
 
 SENTINEL = object()
 
@@ -25,7 +26,7 @@ class DownloaderThread(threading.Thread):
         self,
         youtube_link,
         sink_queue,
-        name=cute_name(),
+        name=None,
         frame_skip=0,
         daemon=True,
         chunk_size=120,
@@ -37,8 +38,12 @@ class DownloaderThread(threading.Thread):
         self.sink_queue = sink_queue
         self.killer_queue = queue.Queue(1)
         self.daemon = daemon
-        self.name = name
         self.chunk_size = chunk_size
+        if name is None:
+            name = cute_name()
+        self.name = name
+        DOWNLOADER_STOP_EVT.send(self)
+        time.sleep(1)
         DOWNLOADER_STOP_EVT.connect(self.on_kill)
 
     def run(self):
@@ -72,8 +77,13 @@ class DownloaderThread(threading.Thread):
             yield item
 
     def on_kill(self, sender):
-        logger.debug(f"{DOWNLOADER_STOP_EVT} received")
-        self.killer_queue.put(SENTINEL)
+        if isinstance(sender, DownloaderThread):
+            if sender.name != self.name:
+                logger.warning(f"{self.name} killed by {sender.name}")
+                self.killer_queue.put(SENTINEL)
+        else:
+            logger.warning(f"{self.name} killed by {sender}")
+            self.killer_queue.put(SENTINEL)
 
     @staticmethod
     def active_downloaders():

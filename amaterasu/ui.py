@@ -22,10 +22,14 @@ def update_status(sender):
     logger.debug("Subs")
 
 
-def main():
-    DOWNLOAD_QUEUE_SIZE = 300
+DOWNLOAD_QUEUE_SIZE = 300
 
-    st.sidebar.title("Amaterasu")
+
+def main():
+    DOWNLOADER_STOP_EVT.send(__name__)
+    DOWNLOADER_STARTED_EVT.connect(update_status)
+    sink = queue.Queue(DOWNLOAD_QUEUE_SIZE)
+
     status = st.sidebar.empty()
     frame_display = st.empty()
     youtube_link = st.sidebar.text_input(
@@ -38,9 +42,6 @@ def main():
     active_threads = st.sidebar.empty()
     response_display = st.sidebar.empty()
     kill_button = st.sidebar.button("Kill")
-
-    DOWNLOADER_STARTED_EVT.connect(update_status)
-    sink = queue.Queue(DOWNLOAD_QUEUE_SIZE)
     downloader = DownloaderThread(
         youtube_link, sink_queue=sink, frame_skip=every, chunk_size=120
     )
@@ -78,7 +79,6 @@ def main():
     active_threads.markdown(
         "\n".join([f"* {t.getName()}" for t in downloader.active_downloaders()])
     )
-    logger.debug(f"{threading.enumerate()}")
 
 
 profiler = Profiler()
