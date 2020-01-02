@@ -4,7 +4,7 @@ import joblib
 from loguru import logger
 from pyprojroot import here
 
-model = joblib.load(here("../arp_tn_face_recognition/data/models/knn.model"))
+model = joblib.load(here("models/knn.model"))
 
 
 def predict(frame, threshold=0.6):
