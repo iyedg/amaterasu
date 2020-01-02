@@ -73,7 +73,7 @@ class DownloaderThread(threading.Thread):
                     or self.current_frame == 1
                 ):
                     logger.debug(f"{self.name} successfully received frame")
-                    resized_frame = cv2.resize(src=frame, dsize=(480, 320))
+                    resized_frame = cv2.resize(src=frame, dsize=(640, 480))
                     buffer.append({"frame": resized_frame, "timestamp": ts})
             self.sink_queue.put(buffer)
         self.sink_queue.put(SENTINEL)
