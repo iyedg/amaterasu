@@ -21,6 +21,10 @@ def update_status(sender):
 DOWNLOAD_QUEUE_SIZE = 300
 
 
+# TODO: quality chooser
+# TODO: user initiated processing
+
+
 def main():
     DOWNLOADER_STOP_EVT.send(__name__)
     DOWNLOADER_STARTED_EVT.connect(update_status)

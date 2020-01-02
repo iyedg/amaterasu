@@ -95,6 +95,14 @@ wrapt = ">=1.11.0,<1.12.0"
 
 [[package]]
 category = "main"
+description = "Async generators and context managers for Python 3.5+"
+name = "async-generator"
+optional = false
+python-versions = ">=3.5"
+version = "1.10"
+
+[[package]]
+category = "main"
 description = "Timeout context manager for asyncio programs"
 name = "async-timeout"
 optional = false
@@ -649,6 +657,32 @@ traitlets = "*"
 
 [[package]]
 category = "main"
+description = "The Jupyter Server"
+name = "jupyter-server"
+optional = false
+python-versions = "*"
+version = "0.1.1"
+
+[package.dependencies]
+Send2Trash = "*"
+ipykernel = "*"
+ipython-genutils = "*"
+jinja2 = "*"
+jupyter-client = ">=5.3.1"
+jupyter-core = ">=4.4.0"
+nbconvert = "*"
+nbformat = "*"
+prometheus-client = "*"
+pyzmq = ">=17"
+terminado = ">=0.8.1"
+tornado = ">=4"
+traitlets = ">=4.2.1"
+
+[package.extras]
+test = ["nose", "coverage", "requests", "nose-warnings-filters", "nbval", "nose-exclude", "selenium", "mock", "nose-exclude"]
+
+[[package]]
+category = "main"
 description = "Jupyter server extension to supervise and proxy web services"
 name = "jupyter-server-proxy"
 optional = false
@@ -702,6 +736,17 @@ version = "0.1.0a3"
 [package.dependencies]
 dash = "*"
 jupyter-server-proxy = "*"
+
+[[package]]
+category = "main"
+description = "Pygments theme"
+name = "jupyterlab-pygments"
+optional = false
+python-versions = "*"
+version = "0.1.0"
+
+[package.dependencies]
+pygments = ">=2.4.1,<3"
 
 [[package]]
 category = "main"
@@ -1516,6 +1561,24 @@ test = ["pytest (>=2.2.3)", "flake8 (>=2.4.0)", "isort (>=4.2.2)"]
 
 [[package]]
 category = "main"
+description = "Serving read-only live Jupyter notebooks"
+name = "voila"
+optional = false
+python-versions = ">=3.5"
+version = "0.1.20"
+
+[package.dependencies]
+async-generator = "*"
+jupyter-server = ">=0.1.0,<0.2.0"
+jupyterlab-pygments = ">=0.1.0,<0.2"
+nbconvert = ">=5.5.0,<6"
+pygments = ">=2.4.1,<3"
+
+[package.extras]
+test = ["mock", "pytest (<4)", "pytest-tornado", "matplotlib", "ipywidgets"]
+
+[[package]]
+category = "main"
 description = "Filesystem events monitoring"
 name = "watchdog"
 optional = false
@@ -1608,7 +1671,7 @@ python-versions = "*"
 version = "2019.12.25"
 
 [metadata]
-content-hash = "a55787f5ea63c6e6adf89afc7c687ee890b243ef5308b6528787dcc7a84ff08e"
+content-hash = "e04dea4bbd94e76030243fcf3729e9e90d9334e2925119e15bfb5fde8eef5be1"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1653,6 +1716,10 @@ astor = [
 astroid = [
     {file = "astroid-2.3.3-py3-none-any.whl", hash = "sha256:840947ebfa8b58f318d42301cf8c0a20fd794a33b61cc4638e28e9e61ba32f42"},
     {file = "astroid-2.3.3.tar.gz", hash = "sha256:71ea07f44df9568a75d0f354c49143a4575d90645e9fead6dfb52c26a85ed13a"},
+]
+async-generator = [
+    {file = "async_generator-1.10-py3-none-any.whl", hash = "sha256:01c7bf666359b4967d2cda0000cc2e4af16a0ae098cbffcb8472fb9e8ad6585b"},
+    {file = "async_generator-1.10.tar.gz", hash = "sha256:6ebb3d106c12920aaae42ccb6f787ef5eefdcdd166ea3d628fa8476abe712144"},
 ]
 async-timeout = [
     {file = "async-timeout-3.0.1.tar.gz", hash = "sha256:0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f"},
@@ -1832,6 +1899,10 @@ jupyter-core = [
     {file = "jupyter_core-4.6.1-py2.py3-none-any.whl", hash = "sha256:464769f7387d7a62a2403d067f1ddc616655b7f77f5d810c0dd62cb54bfd0fb9"},
     {file = "jupyter_core-4.6.1.tar.gz", hash = "sha256:a183e0ec2e8f6adddf62b0a3fc6a2237e3e0056d381e536d3e7c7ecc3067e244"},
 ]
+jupyter-server = [
+    {file = "jupyter_server-0.1.1-py2.py3-none-any.whl", hash = "sha256:cf2151b39d258eefddbfdc8e21ae486ab30618b176612b2e1fa15b3ddb9aec3f"},
+    {file = "jupyter_server-0.1.1.tar.gz", hash = "sha256:3eb8e6cccab8da5e13df954fb6e3544ad9b0591948fe1e017428824e23303888"},
+]
 jupyter-server-proxy = [
     {file = "jupyter-server-proxy-1.2.0.tar.gz", hash = "sha256:bc6c44c954c4a8e65ae0a545bd2c27f89ca3188de152eed3ee5478f357ad2006"},
 ]
@@ -1846,6 +1917,10 @@ jupyterlab-code-formatter = [
 jupyterlab-dash = [
     {file = "jupyterlab-dash-0.1.0a3.tar.gz", hash = "sha256:70f2835833759bea6d5ee94e7b72f8cd5978875dd795bc3b372578d6a235c02c"},
     {file = "jupyterlab_dash-0.1.0a3-py3-none-any.whl", hash = "sha256:7ef29a7f940fd2421b02ecaf9a09c74e8314ade5363a71c5ca34f344447555ed"},
+]
+jupyterlab-pygments = [
+    {file = "jupyterlab_pygments-0.1.0-py2.py3-none-any.whl", hash = "sha256:cc15f2a9850899d108a3c22743a86edcd3b42791a6c88b6e5b558d021d14d065"},
+    {file = "jupyterlab_pygments-0.1.0.tar.gz", hash = "sha256:31deda75bd11b014190764c79f6199aa04ef2d4cf35c1c94270fc2e19c23a5c5"},
 ]
 jupyterlab-server = [
     {file = "jupyterlab_server-1.0.6-py3-none-any.whl", hash = "sha256:d9c3bcf097f7ad8d8fd2f8d0c1e8a1b833671c02808e5f807088975495364447"},
@@ -2494,6 +2569,10 @@ urllib3 = [
 ]
 validators = [
     {file = "validators-0.14.1.tar.gz", hash = "sha256:0bfe836a1af37bb266d71ec1e98b530c38ce11bc7fbe0c4c96ef7b1532d019e5"},
+]
+voila = [
+    {file = "voila-0.1.20-py3-none-any.whl", hash = "sha256:318ce57e9e6c1efe8740d50126e41593d5490d3157aa2d72f53cae610ff75b24"},
+    {file = "voila-0.1.20.tar.gz", hash = "sha256:7babe483a75e7dc1a15510f7d7c7632d807ba85a7afa41f335d7a6f978d5c2b6"},
 ]
 watchdog = [
     {file = "watchdog-0.9.0.tar.gz", hash = "sha256:965f658d0732de3188211932aeb0bb457587f04f63ab4c1e33eab878e9de961d"},
